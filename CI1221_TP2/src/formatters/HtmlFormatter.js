@@ -1,16 +1,10 @@
-import * as fs from 'node:fs';
+import Formatter from '../core/Formatter.js';
 
-export default class CidadesHTMLReport {
-
-  ler (caminho) {
-    this.cidades = fs.readFileSync(caminho);
-  }
-
-  parse () {
-    this.cidades = JSON.parse(this.cidades);
-  }
-
-  reportar() {
+/**
+ * Concrete strategy for formatting data as HTML
+ */
+export default class HtmlFormatter extends Formatter {
+  format(cities) {
     let result = `
   <!DOCTYPE HTML>
   <html>
@@ -23,8 +17,8 @@ export default class CidadesHTMLReport {
       <ul>
   `;
 
-    for (let i = 0; i < this.cidades.length; i++) {
-      result += '     <li>' + this.cidades[i]['Nome'] + '</li>\n';
+    for (const city of cities) {
+      result += `     <li>${city.nome}</li>\n`;
     }
 
     result += `
