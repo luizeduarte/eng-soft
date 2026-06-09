@@ -4,8 +4,8 @@ import Formatter from '../core/Formatter.js';
  * Concrete strategy for formatting data as HTML
  */
 export default class HtmlFormatter extends Formatter {
-  format(cities) {
-    let result = `
+  getHeader() {
+    return `
   <!DOCTYPE HTML>
   <html>
     <head>
@@ -16,16 +16,16 @@ export default class HtmlFormatter extends Formatter {
       <h1>Relatório de Nomes de Cidades</h1>
       <ul>
   `;
+  }
 
-    for (const city of cities) {
-      result += `     <li>${city.nome}</li>\n`;
-    }
+  formatItem(city) {
+    return `     <li>${city.nome}</li>\n`;
+  }
 
-    result += `
+  getFooter() {
+    return `
       </ul>
     </body>
   </html>`;
-
-    return result;
   }
 }
