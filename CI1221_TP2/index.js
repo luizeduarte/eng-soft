@@ -4,33 +4,44 @@ import ReportGenerator from './src/services/ReportGenerator.js';
 
 /**
  * CLI application for generating city reports
- * Usage: node index.js <filePath> <format>
+ * Usage: node index.js --format=<format> --source=<filePath>
  *
  * Examples:
- *   node index.js data/cidades-2.json html      # JSON -> HTML
- *   node index.js data/cidades-2.json txt       # JSON -> TXT
- *   node index.js data/cidades.csv html         # CSV -> HTML
- *   node index.js data/cidades.csv csv          # CSV -> CSV
- *   node index.js data/cidades.csv markdown     # CSV -> Markdown
+ *   node index.js --format=html --source=data/cidades-2.json      # JSON -> HTML
+ *   node index.js --format=txt --source=data/cidades-2.json       # JSON -> TXT
+ *   node index.js --format=html --source=data/cidades.csv         # CSV -> HTML
+ *   node index.js --format=csv --source=data/cidades.csv          # CSV -> CSV
+ *   node index.js --format=markdown --source=data/cidades.csv     # CSV -> Markdown
  */
 
 // Parse command line arguments
 const args = process.argv.slice(2);
 
-if (args.length < 2) {
-  console.error('Usage: node index.js <filePath> <format>');
+let format = null;
+let source = null;
+
+for (const arg of args) {
+  if (arg.startsWith('--format=')) {
+    format = arg.split('=')[1];
+  } else if (arg.startsWith('--source=')) {
+    source = arg.split('=')[1];
+  }
+}
+
+if (!format || !source) {
+  console.error('Usage: node index.js --format=<format> --source=<filePath>');
   console.error('');
   console.error('Supported formats: html, txt, csv, markdown');
   console.error('');
   console.error('Examples:');
-  console.error('  node index.js data/cidades-2.json html');
-  console.error('  node index.js data/cidades-2.json txt');
-  console.error('  node index.js data/cidades.csv csv');
-  console.error('  node index.js data/cidades.csv markdown');
+  console.error('  node index.js --format=html --source=data/cidades-2.json');
+  console.error('  node index.js --format=txt --source=data/cidades-2.json');
+  console.error('  node index.js --format=csv --source=data/cidades.csv');
+  console.error('  node index.js --format=markdown --source=data/cidades.csv');
   process.exit(1);
 }
 
-const [filePath, format] = args;
+const filePath = source;
 
 try {
   // Create reader based on file extension (Dependency Injection)
