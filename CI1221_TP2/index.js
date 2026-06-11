@@ -44,16 +44,9 @@ if (!format || !source) {
 const filePath = source;
 
 try {
-  // Create reader based on file extension (Dependency Injection)
   const reader = ReaderFactory.createReader(filePath);
-
-  // Create formatter based on desired format (Dependency Injection)
   const formatter = FormatterFactory.createFormatter(format);
-
-  // Create report generator with injected dependencies
   const generator = new ReportGenerator(reader, formatter);
-
-  // Generate and output the report
   const report = generator.generate(filePath);
   console.log(report);
 } catch (error) {
